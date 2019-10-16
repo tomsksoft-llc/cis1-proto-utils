@@ -15,10 +15,15 @@ namespace proto_utils
 const std::string transaction::default_error_ = "system.error";
 
 transaction::transaction(
-        const std::shared_ptr<queue_interface>& queue,
+        const std::weak_ptr<queue_interface>& queue,
         uint64_t transaction_id)
     : transaction_id_(transaction_id)
     , queue_(queue)
+{}
+
+transaction::transaction(const transaction& tr)
+    : transaction_id_(tr.transaction_id_)
+    , queue_(tr.queue_)
 {}
 
 void transaction::send_error(const std::string& err) const
@@ -62,6 +67,11 @@ std::optional<boost::asio::executor> transaction::get_executor() const
     }
 
     return std::nullopt;
+}
+
+std::weak_ptr<queue_interface> transaction::get_queue() const
+{
+    return queue_;
 }
 
 void transaction::prepare_response(rapidjson::Document& doc, std::string event) const

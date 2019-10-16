@@ -21,8 +21,10 @@ class transaction
 {
 public:
     transaction(
-            const std::shared_ptr<queue_interface>& queue,
+            const std::weak_ptr<queue_interface>& queue,
             uint64_t transaction_id);
+
+    transaction(const transaction& tr);
 
     template <class Payload>
     void send(const Payload& p) const
@@ -84,6 +86,9 @@ public:
     void send_error(const std::string& err) const;
 
     std::optional<boost::asio::executor> get_executor() const;
+
+    std::weak_ptr<queue_interface> get_queue() const;
+
 private:
     const uint64_t transaction_id_;
     const std::weak_ptr<queue_interface> queue_;
