@@ -4,7 +4,7 @@ from conans import CMake
 
 class Cis1ProtoUtils(ConanFile):
     name = "cis1_proto_utils"
-    version = "0.0.3"
+    version = "0.0.5"
     description = "Shared classes for cis1 protocols."
     author = "MokinIA <mia@tomsksoft.com>"
     generators = "cmake"
@@ -14,7 +14,7 @@ class Cis1ProtoUtils(ConanFile):
     requires = ("boost_system/1.69.0@bincrafters/stable",
                 "boost_asio/1.69.0@bincrafters/stable",
                 "rapidjson/1.1.0@bincrafters/stable",
-                "cis1_tpl/0.0.1@tomsksoft/cis1")
+                "cis1_tpl/0.0.3@tomsksoft/cis1")
 
     def build(self):
         cmake = CMake(self)
