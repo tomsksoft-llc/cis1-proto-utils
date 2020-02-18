@@ -4,7 +4,7 @@ from conans import CMake
 
 class Cis1ProtoUtils(ConanFile):
     name = "cis1_proto_utils"
-    version = "0.0.5"
+    version = "0.0.6"
     description = "Shared classes for cis1 protocols."
     author = "MokinIA <mia@tomsksoft.com>"
     generators = "cmake"

@@ -96,6 +96,11 @@ public:
                     if(    conv.template has<json::engine>(json)
                         && conv.template get<json::engine>(json, req))
                     {
+                        if(!conv.validate(req))
+                        {
+                            return tr.send_error("Invalid field content.");
+                        }
+
                         cb(
                                 std::forward<Args>(ctx)...,
                                 req,
