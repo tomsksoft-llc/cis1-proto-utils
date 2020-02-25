@@ -4,7 +4,8 @@ project(cis1_proto_utils)
 
 set(${PROJECT_NAME}_SRC
     src/transaction.cpp
-    src/cloexec.cpp)
+    src/cloexec.cpp
+    src/param_codec.cpp)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
