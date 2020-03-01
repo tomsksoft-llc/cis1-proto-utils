@@ -11,7 +11,8 @@ class Cis1ProtoUtils(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
     exports = []
     exports_sources = ["CMakeLists.txt", "include/*", "src/*"]
-    requires = ("boost_system/1.69.0@bincrafters/stable",
+    requires = ("gtest/1.8.1@bincrafters/stable",
+                "boost_system/1.69.0@bincrafters/stable",
                 "boost_asio/1.69.0@bincrafters/stable",
                 "rapidjson/1.1.0@bincrafters/stable",
                 "cis1_tpl/0.0.3@tomsksoft/cis1")
