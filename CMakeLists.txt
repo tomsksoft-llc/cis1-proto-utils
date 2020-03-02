@@ -17,7 +17,13 @@ add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRC})
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_link_libraries(${PROJECT_NAME}
+    PUBLIC
+    ${CONAN_LIBS})
 
 if(BUILD_TESTING)
     add_subdirectory(test_package)

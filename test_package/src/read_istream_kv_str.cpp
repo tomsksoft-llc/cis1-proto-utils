@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "read_istream_kv_str.h"
+#include <cis1_proto_utils/read_istream_kv_str.h>
 #include "test_utils.h"
 
 TEST(read_istream_kv_str, encoded_values)

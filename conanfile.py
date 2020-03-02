@@ -23,7 +23,7 @@ class Cis1ProtoUtils(ConanFile):
         cmake.build()
 
     def package(self):
-        self.copy("*.h", dst="include/cis1_proto_utils", src="include")
+        self.copy("*.h", dst="include", src="include")
         self.copy("libcis1_proto_utils.a", dst="lib", src="lib")
         self.copy("libcis1_proto_utils.lib", dst="lib", src="lib")
 

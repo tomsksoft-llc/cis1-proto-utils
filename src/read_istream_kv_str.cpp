@@ -1,7 +1,7 @@
-#include "read_istream_kv_str.h"
+#include <cis1_proto_utils/read_istream_kv_str.h>
 
 #include <algorithm>
-#include "param_codec.h"
+#include <cis1_proto_utils/param_codec.h>
 
 template<typename T>
 std::error_code make_error(T err)

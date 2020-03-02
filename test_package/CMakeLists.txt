@@ -18,11 +18,7 @@ add_executable(
 
 set_property(TARGET tests PROPERTY CXX_STANDARD 17)
 
-if(BUILD_TESTING)
 target_link_libraries(tests cis1_proto_utils ${CONAN_LIBS})
-else()
-target_link_libraries(tests ${CONAN_LIBS})
-endif()
 
 enable_testing()
 add_test(NAME tests
