@@ -1,10 +1,10 @@
-#include "transaction.h"
+#include <cis1_proto_utils/transaction.h>
 
 #include <rapidjson/writer.h>
 
 #include <boost/asio/post.hpp>
 
-#include "protocol_message.h"
+#include <cis1_proto_utils/protocol_message.h>
 
 namespace cis1
 {
