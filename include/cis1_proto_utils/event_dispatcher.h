@@ -3,6 +3,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <optional>
 
 #include <rapidjson/document.h>
 
@@ -37,6 +38,10 @@ public:
             const ReqType&,
             transaction);
 
+    using error_handler_t = void(
+            // error description
+            std::string_view);
+
     void dispatch(
             Args... ctx,
             bool text,
@@ -52,6 +57,7 @@ public:
                     meta::overloaded{
                     [&](const error&)
                     {
+                        on_error("Invalid json");
                         transaction(queue, 0).send_error("Invalid json.");
                     },
                     [&](const protocol_message& msg)
@@ -70,6 +76,7 @@ public:
                         }
                         else
                         {
+                            on_error(std::string_view("Unknown eventId: '" + msg.event + "'"));
                             tr.send_error("Unknown eventId.");
                         }
                     }},
@@ -98,6 +105,7 @@ public:
                     {
                         if(!conv.validate(req))
                         {
+                            on_error("Invalid field content.");
                             return tr.send_error("Invalid field content.");
                         }
 
@@ -108,9 +116,16 @@ public:
                     }
                     else
                     {
+                        on_error("Invalid json");
                         tr.send_error("Invalid json.");
                     }
                 }});
+    }
+
+    void set_error_handler(
+            const std::function<error_handler_t>& cb)
+    {
+        error_handler_ = cb;
     }
 
 private:
@@ -150,7 +165,16 @@ private:
         return error::invalid_json;
     }
 
+    void on_error(std::string_view desc)
+    {
+        if(error_handler_)
+        {
+            error_handler_.value()(desc);
+        }
+    }
+
     std::map<std::string, std::function<event_handler_t>> event_handlers_;
+    std::optional<std::function<error_handler_t>> error_handler_;
 };
 
 } // namespace proto_utils
