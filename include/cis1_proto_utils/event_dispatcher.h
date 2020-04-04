@@ -57,7 +57,7 @@ public:
                     meta::overloaded{
                     [&](const error&)
                     {
-                        on_error("Invalid json");
+                        on_error(error_handler_, "Invalid json");
                         transaction(queue, 0).send_error("Invalid json.");
                     },
                     [&](const protocol_message& msg)
@@ -76,7 +76,7 @@ public:
                         }
                         else
                         {
-                            on_error(std::string_view("Unknown eventId: '" + msg.event + "'"));
+                            on_error(error_handler_, "Unknown eventId: '" + msg.event + "'");
                             tr.send_error("Unknown eventId.");
                         }
                     }},
@@ -92,7 +92,7 @@ public:
 
         event_handlers_.insert({
                 conv.template name<json::engine>(),
-                [cb](
+                [errcb = error_handler_, cb](
                      Args... ctx,
                      const rapidjson::Value& json,
                      transaction tr)
@@ -105,7 +105,7 @@ public:
                     {
                         if(!conv.validate(req))
                         {
-                            on_error("Invalid field content.");
+                            on_error(errcb, "Invalid field content.");
                             return tr.send_error("Invalid field content.");
                         }
 
@@ -116,7 +116,7 @@ public:
                     }
                     else
                     {
-                        on_error("Invalid json");
+                        on_error(errcb, "Invalid json");
                         tr.send_error("Invalid json.");
                     }
                 }});
@@ -165,18 +165,21 @@ private:
         return error::invalid_json;
     }
 
-    void on_error(std::string_view desc)
+    static void on_error(
+            std::optional<std::function<error_handler_t>> error_handler,
+            std::string_view desc)
     {
-        if(error_handler_)
+        if(error_handler)
         {
-            error_handler_.value()(desc);
+            error_handler.value()(desc);
         }
     }
 
     std::map<std::string, std::function<event_handler_t>> event_handlers_;
-    std::optional<std::function<error_handler_t>> error_handler_;
+    std::optional<std::function<error_handler_t>> error_handler_ = std::nullopt;
 };
 
 } // namespace proto_utils
 
 } // namespace cis1
+
