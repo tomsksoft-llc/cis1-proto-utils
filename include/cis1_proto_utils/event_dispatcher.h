@@ -166,17 +166,17 @@ private:
     }
 
     static void on_error(
-            std::optional<std::function<error_handler_t>> error_handler,
+            std::function<error_handler_t> error_handler,
             std::string_view desc)
     {
         if(error_handler)
         {
-            error_handler.value()(desc);
+            error_handler(desc);
         }
     }
 
     std::map<std::string, std::function<event_handler_t>> event_handlers_;
-    std::optional<std::function<error_handler_t>> error_handler_ = std::nullopt;
+    std::function<error_handler_t> error_handler_;
 };
 
 } // namespace proto_utils
